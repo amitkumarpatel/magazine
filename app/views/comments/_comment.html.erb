@@ -1,17 +1,29 @@
+
+<div class = "replies">
 <p>
   <strong>Commenter:</strong>
-  <%= comment.commenter %>
+  <%= comment.try(:commenter) %>
 </p>
  
 <p>
   <strong>Comment:</strong>
-  <%= comment.body %>
+  <%= comment.try(:body) %>
 </p>
 
-<p>
-  <%= link_to 'Destroy Comment', [comment.article, comment],
-               method: :delete,
-               data: { confirm: 'Are you sure?' } %>
-</p>
 
-<p><%= link_to 'reply', article_comment_new_comment_path(comment.article.id,comment.id) %></p>
+<% from_reply_form ||= nil %>
+<% unless from_reply_form %>
+	<p><%= link_to 'reply', article_comment_new_comment_path(comment.article.id,comment.id) %></p>
+	<p>
+	  <%= link_to 'Destroy Comment', [comment.article, comment],
+	               method: :delete,
+	               data: { confirm: 'Are you sure?' } %>
+	</p>
+<% end %>
+
+</div>
+
+<style>
+.replies {margin-left: 50px;}
+.replies .replies .replies .replies .replies {margin-left: 0;}
+</style>
