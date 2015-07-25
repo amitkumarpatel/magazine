@@ -1,16 +1,9 @@
 class CommentsController < ApplicationController
   def create
     @article = Article.find(params[:article_id])
-    @comment = @article.comments.create(comment_params)
+    params = comment_params.merge(:user_id => current_user.id)
+    @comment = @article.comments.create(params)
     redirect_to article_path(@article)
-
-
-    #if params[:comment][:parent_id].to_i > 0
-    #	parent = Comment.find_by_id(params[:comment].delete(:parent_id))
-    # 	@comment = parent.children.build(comment_params)
-	#else
-   #	@comment = Comment.new(comment_params)
-  	#end
   end
  
   def destroy
@@ -26,6 +19,6 @@ class CommentsController < ApplicationController
   end
     private
     def comment_params
-      params.require(:comment).permit(:commenter, :body, :parent_id)
+      params.require(:comment).permit(:commenter, :body, :parent_id, :user_id)
     end
 end

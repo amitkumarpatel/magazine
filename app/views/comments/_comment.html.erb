@@ -14,16 +14,9 @@
 <% from_reply_form ||= nil %>
 <% unless from_reply_form %>
 	<p><%= link_to 'reply', article_comment_new_comment_path(comment.article.id,comment.id) %></p>
-	<p>
-	  <%= link_to 'Destroy Comment', [comment.article, comment],
-	               method: :delete,
-	               data: { confirm: 'Are you sure?' } %>
-	</p>
+	<%if (current_user && current_user == comment.user) && !comment.children.present?%>
+	<p> <%= link_to 'Destroy Comment', [comment.article, comment], method: :delete,data: { confirm: 'Are you sure?'} %> </p>
+	<%end%>
 <% end %>
 
 </div>
-
-<style>
-.replies {margin-left: 50px;}
-.replies .replies .replies .replies .replies {margin-left: 0;}
-</style>
